@@ -1,77 +1,58 @@
 package com.train.calculator;
 
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.train.calculator.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
 public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // Associate the elements from the xml file to the Java code
+        TextView textResult = findViewById(R.id.text_result);
+        Button button1 = findViewById(R.id.button_1);
+        Button button2 = findViewById(R.id.button_2);
+        Button button3 = findViewById(R.id.button_3);
 
-        setSupportActionBar(binding.toolbar);
+        // Let's add an action to the button, by concatenating the number to the text if it is diffrent from 0
+        button1.setOnClickListener(v -> {
+            if (textResult.getText().toString().equals("0")) {
+                textResult.setText("1");
+            } else {
+                textResult.setText(textResult.getText() + "1");
+            }
+        });
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        button2.setOnClickListener(v -> {
+            if (textResult.getText().toString().equals("0")) {
+                textResult.setText("2");
+            } else {
+                textResult.setText(textResult.getText() + "2");
+            }
+        });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+        button3.setOnClickListener(v -> {
+            if (textResult.getText().toString().equals("0")) {
+                textResult.setText("3");
+            } else {
+                textResult.setText(textResult.getText() + "3");
+            }
+        });
+
+        //Iplement the logic for the backspace button
+        Button buttonBackspace = findViewById(R.id.button_backspace);
+        buttonBackspace.setOnClickListener(v -> {
+            String currentText = textResult.getText().toString();
+            if (currentText.length() > 1) {
+                textResult.setText(currentText.substring(0, currentText.length() - 1));
+            } else {
+                textResult.setText("0");
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
 }
